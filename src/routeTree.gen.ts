@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedAttendanceRouteImport } from './routes/_authenticated/attendance'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
 import { Route as AuthenticatedSalaryRouteImport } from './routes/_authenticated/salary'
 import { Route as AuthenticatedStaffIndexRouteImport } from './routes/_authenticated/staff.index'
 import { Route as AuthenticatedStaffIdRouteImport } from './routes/_authenticated/staff.$id'
@@ -42,6 +43,11 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedReportsRoute = AuthenticatedReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedSalaryRoute = AuthenticatedSalaryRouteImport.update({
   id: '/salary',
   path: '/salary',
@@ -63,6 +69,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/attendance': typeof AuthenticatedAttendanceRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/reports': typeof AuthenticatedReportsRoute
   '/salary': typeof AuthenticatedSalaryRoute
   '/staff/$id': typeof AuthenticatedStaffIdRoute
   '/staff/': typeof AuthenticatedStaffIndexRoute
@@ -72,6 +79,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/attendance': typeof AuthenticatedAttendanceRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/reports': typeof AuthenticatedReportsRoute
   '/salary': typeof AuthenticatedSalaryRoute
   '/staff/$id': typeof AuthenticatedStaffIdRoute
   '/staff': typeof AuthenticatedStaffIndexRoute
@@ -83,6 +91,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/_authenticated/attendance': typeof AuthenticatedAttendanceRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/reports': typeof AuthenticatedReportsRoute
   '/_authenticated/salary': typeof AuthenticatedSalaryRoute
   '/_authenticated/staff/$id': typeof AuthenticatedStaffIdRoute
   '/_authenticated/staff/': typeof AuthenticatedStaffIndexRoute
@@ -94,6 +103,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/attendance'
     | '/dashboard'
+    | '/reports'
     | '/salary'
     | '/staff/$id'
     | '/staff/'
@@ -103,6 +113,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/attendance'
     | '/dashboard'
+    | '/reports'
     | '/salary'
     | '/staff/$id'
     | '/staff'
@@ -113,6 +124,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/_authenticated/attendance'
     | '/_authenticated/dashboard'
+    | '/_authenticated/reports'
     | '/_authenticated/salary'
     | '/_authenticated/staff/$id'
     | '/_authenticated/staff/'
@@ -161,6 +173,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/reports': {
+      id: '/_authenticated/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof AuthenticatedReportsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/salary': {
       id: '/_authenticated/salary'
       path: '/salary'
@@ -188,6 +207,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAttendanceRoute: typeof AuthenticatedAttendanceRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
   AuthenticatedSalaryRoute: typeof AuthenticatedSalaryRoute
   AuthenticatedStaffIdRoute: typeof AuthenticatedStaffIdRoute
   AuthenticatedStaffIndexRoute: typeof AuthenticatedStaffIndexRoute
@@ -196,6 +216,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAttendanceRoute: AuthenticatedAttendanceRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedReportsRoute: AuthenticatedReportsRoute,
   AuthenticatedSalaryRoute: AuthenticatedSalaryRoute,
   AuthenticatedStaffIdRoute: AuthenticatedStaffIdRoute,
   AuthenticatedStaffIndexRoute: AuthenticatedStaffIndexRoute,
