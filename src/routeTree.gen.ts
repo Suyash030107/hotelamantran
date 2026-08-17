@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedStaffIndexRouteImport } from './routes/_authenticated/staff.index'
+import { Route as AuthenticatedStaffIdRouteImport } from './routes/_authenticated/staff.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -39,17 +40,24 @@ const AuthenticatedStaffIndexRoute = AuthenticatedStaffIndexRouteImport.update({
   path: '/staff/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedStaffIdRoute = AuthenticatedStaffIdRouteImport.update({
+  id: '/staff/$id',
+  path: '/staff/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/staff/$id': typeof AuthenticatedStaffIdRoute
   '/staff/': typeof AuthenticatedStaffIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/staff/$id': typeof AuthenticatedStaffIdRoute
   '/staff': typeof AuthenticatedStaffIndexRoute
 }
 export interface FileRoutesById {
@@ -58,19 +66,21 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/staff/$id': typeof AuthenticatedStaffIdRoute
   '/_authenticated/staff/': typeof AuthenticatedStaffIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/dashboard' | '/staff/'
+  fullPaths: '/' | '/login' | '/dashboard' | '/staff/$id' | '/staff/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/dashboard' | '/staff'
+  to: '/' | '/login' | '/dashboard' | '/staff/$id' | '/staff'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/login'
     | '/_authenticated/dashboard'
+    | '/_authenticated/staff/$id'
     | '/_authenticated/staff/'
   fileRoutesById: FileRoutesById
 }
@@ -117,16 +127,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedStaffIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/staff/$id': {
+      id: '/_authenticated/staff/$id'
+      path: '/staff/$id'
+      fullPath: '/staff/$id'
+      preLoaderRoute: typeof AuthenticatedStaffIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedStaffIdRoute: typeof AuthenticatedStaffIdRoute
   AuthenticatedStaffIndexRoute: typeof AuthenticatedStaffIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedStaffIdRoute: AuthenticatedStaffIdRoute,
   AuthenticatedStaffIndexRoute: AuthenticatedStaffIndexRoute,
 }
 
