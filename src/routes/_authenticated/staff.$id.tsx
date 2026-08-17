@@ -40,7 +40,7 @@ function StaffDetailPage() {
   const staffQuery = useStaffMember(id);
   const { data: departments } = useDepartments();
   const { data: settings } = useSettings();
-  const month = monthKey();
+  const month = monthKey(new Date());
   const attendanceQuery = useStaffAttendance(id, `${month}-01`, `${month}-31`);
 
   const money = currencyFormatter(settings?.currency ?? "INR");
@@ -76,7 +76,6 @@ function StaffDetailPage() {
     ["Email", staff.email || "—"],
     ["Address", staff.address || "—"],
     ["Date of joining", formatDate(staff.date_of_joining)],
-    ["Shift", `${staff.shift_start.slice(0, 5)} – ${staff.shift_end.slice(0, 5)}`],
     ["Working hours / day", `${Number(staff.working_hours)}h`],
     [
       "Salary",
