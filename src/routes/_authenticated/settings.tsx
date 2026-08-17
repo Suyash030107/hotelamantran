@@ -40,7 +40,7 @@ export const Route = createFileRoute("/_authenticated/settings")({
       },
     ],
   }),
-  component: SettingsPage;
+  component: SettingsPage,
 });
 
 function SettingsPage() {
