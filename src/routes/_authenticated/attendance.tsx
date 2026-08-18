@@ -151,8 +151,8 @@ function AttendancePage() {
                 staff={staff}
                 settings={settings}
                 trigger={
-                  <Button>
-                    <Camera className="size-4" /> Camera attendance
+                  <Button size="lg" className="shadow-sm">
+                    <Camera className="size-4" /> 📸 Mark Attendance
                   </Button>
                 }
               />
