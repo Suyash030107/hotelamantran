@@ -1,5 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Eye, Pencil, Plus, Search, Trash2, Users } from "lucide-react";
+import {
+  Eye,
+  Pencil,
+  Plus,
+  Search,
+  Trash2,
+  UserRoundCheck,
+  UserRoundX,
+  Users,
+} from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
@@ -27,7 +36,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useDeleteStaff, useDepartments, useSettings, useStaffList } from "@/lib/api";
+import {
+  useDeleteStaff,
+  useDepartments,
+  useSettings,
+  useStaffList,
+  useUpdateStaff,
+} from "@/lib/api";
 import { currencyFormatter, formatDate } from "@/lib/domain";
 
 export const Route = createFileRoute("/_authenticated/staff/")({
@@ -58,6 +73,7 @@ function StaffPage() {
   const { data: departments } = useDepartments();
   const { data: settings } = useSettings();
   const deleteStaff = useDeleteStaff();
+  const updateStaff = useUpdateStaff();
   const money = currencyFormatter(settings?.currency ?? "INR");
 
   const staff = staffQuery.data ?? [];
@@ -78,7 +94,23 @@ function StaffPage() {
     });
   }, [staff, search, department, status]);
 
-  const nextCode = `EMP${String(staff.length + 1).padStart(3, "0")}`;
+  // Auto-generated staff ID: one past the highest existing EMP number.
+  const nextCode = useMemo(() => {
+    const highest = staff.reduce((max, s) => {
+      const n = Number(/^EMP(\d+)$/i.exec(s.staff_code.trim())?.[1] ?? 0);
+      return Number.isFinite(n) && n > max ? n : max;
+    }, 0);
+    return `EMP${String(Math.max(highest, staff.length) + 1).padStart(3, "0")}`;
+  }, [staff]);
+
+  async function toggleActive(id: string, name: string, isActive: boolean) {
+    try {
+      await updateStaff.mutateAsync({ id, is_active: !isActive });
+      toast.success(`${name} ${isActive ? "deactivated" : "reactivated"}`);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not update staff");
+    }
+  }
 
   async function handleDelete(id: string, name: string) {
     try {
@@ -236,6 +268,19 @@ function StaffPage() {
                             </Button>
                           }
                         />
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          aria-label={s.is_active ? "Deactivate" : "Reactivate"}
+                          title={s.is_active ? "Deactivate staff" : "Reactivate staff"}
+                          onClick={() => void toggleActive(s.id, s.full_name, s.is_active)}
+                        >
+                          {s.is_active ? (
+                            <UserRoundX className="size-4" />
+                          ) : (
+                            <UserRoundCheck className="size-4" />
+                          )}
+                        </Button>
                         <DeleteStaffButton
                           name={s.full_name}
                           onConfirm={() => void handleDelete(s.id, s.full_name)}
@@ -277,6 +322,18 @@ function StaffPage() {
                       </Button>
                     }
                   />
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label={s.is_active ? "Deactivate" : "Reactivate"}
+                    onClick={() => void toggleActive(s.id, s.full_name, s.is_active)}
+                  >
+                    {s.is_active ? (
+                      <UserRoundX className="size-4" />
+                    ) : (
+                      <UserRoundCheck className="size-4" />
+                    )}
+                  </Button>
                 </li>
               ))}
             </ul>

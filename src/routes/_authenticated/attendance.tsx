@@ -151,8 +151,8 @@ function AttendancePage() {
                 staff={staff}
                 settings={settings}
                 trigger={
-                  <Button>
-                    <Camera className="size-4" /> Camera attendance
+                  <Button size="lg" className="shadow-sm">
+                    <Camera className="size-4" /> 📸 Mark Attendance
                   </Button>
                 }
               />
@@ -262,6 +262,56 @@ function AttendancePage() {
               </ul>
             )}
           </div>
+
+          <section className="space-y-3">
+            <h2 className="text-sm font-semibold tracking-wide text-muted-foreground uppercase">
+              {date === todayKey() ? "Today's attendance" : `Records for ${formatDate(date)}`}
+            </h2>
+            <div className="surface-panel overflow-hidden">
+              {dayQuery.isLoading ? (
+                <LoadingRows />
+              ) : rows.length === 0 ? (
+                <EmptyState
+                  icon={CalendarCheck}
+                  title={
+                    date === todayKey()
+                      ? "No attendance recorded today"
+                      : "No attendance recorded for this date"
+                  }
+                  description="Use Mark Attendance to capture a photo check-in, or set a status above."
+                />
+              ) : (
+                <ul className="divide-y divide-border">
+                  {rows.map((row) => {
+                    const member = (staffQuery.data ?? []).find((s) => s.id === row.staff_id);
+                    return (
+                      <li key={row.id} className="flex flex-wrap items-center gap-3 px-4 py-3">
+                        <StaffAvatar
+                          name={member?.full_name ?? "Staff"}
+                          path={row.photo_path ?? member?.photo_path}
+                        />
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-sm font-medium">
+                            {member?.full_name ?? "Removed staff"}
+                          </p>
+                          <p className="num text-xs text-muted-foreground">
+                            In {formatTime(row.check_in)} · Out {formatTime(row.check_out)} ·{" "}
+                            {Number(row.worked_hours)}h worked
+                            {Number(row.overtime_hours) > 0
+                              ? ` · ${Number(row.overtime_hours)}h OT`
+                              : ""}
+                          </p>
+                        </div>
+                        <Badge variant="secondary" className={STATUS_CLASS[row.status]}>
+                          {STATUS_LABEL[row.status]}
+                        </Badge>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </div>
+          </section>
         </TabsContent>
 
         <TabsContent value="leave">
