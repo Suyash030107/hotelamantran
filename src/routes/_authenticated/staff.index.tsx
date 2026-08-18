@@ -94,7 +94,23 @@ function StaffPage() {
     });
   }, [staff, search, department, status]);
 
-  const nextCode = `EMP${String(staff.length + 1).padStart(3, "0")}`;
+  // Auto-generated staff ID: one past the highest existing EMP number.
+  const nextCode = useMemo(() => {
+    const highest = staff.reduce((max, s) => {
+      const n = Number(/^EMP(\d+)$/i.exec(s.staff_code.trim())?.[1] ?? 0);
+      return Number.isFinite(n) && n > max ? n : max;
+    }, 0);
+    return `EMP${String(Math.max(highest, staff.length) + 1).padStart(3, "0")}`;
+  }, [staff]);
+
+  async function toggleActive(id: string, name: string, isActive: boolean) {
+    try {
+      await updateStaff.mutateAsync({ id, is_active: !isActive });
+      toast.success(`${name} ${isActive ? "deactivated" : "reactivated"}`);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not update staff");
+    }
+  }
 
   async function handleDelete(id: string, name: string) {
     try {
