@@ -36,7 +36,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useDeleteStaff, useDepartments, useSettings, useStaffList } from "@/lib/api";
+import {
+  useDeleteStaff,
+  useDepartments,
+  useSettings,
+  useStaffList,
+  useUpdateStaff,
+} from "@/lib/api";
 import { currencyFormatter, formatDate } from "@/lib/domain";
 
 export const Route = createFileRoute("/_authenticated/staff/")({
