@@ -155,6 +155,10 @@ export function CameraAttendanceDialog({
           worked_hours: existing?.worked_hours ?? 0,
           overtime_hours: existing?.overtime_hours ?? 0,
           photo_path: photoPath ?? existing?.photo_path ?? null,
+          check_out_photo_path: existing?.check_out_photo_path ?? null,
+          // Photo capture + manual staff selection today; face verification can set
+          // this to "face" together with face_match_score later.
+          verification_method: photoPath ? "photo" : "manual",
         });
         toast.success(
           `${member.full_name} checked in${late ? " (marked late)" : ""} at ${now.toLocaleTimeString()}`,
@@ -175,7 +179,9 @@ export function CameraAttendanceDialog({
           check_out: now.toISOString(),
           worked_hours: worked,
           overtime_hours: overtime,
-          photo_path: photoPath ?? existing.photo_path,
+          photo_path: existing.photo_path,
+          check_out_photo_path: photoPath ?? existing.check_out_photo_path ?? null,
+          verification_method: existing.verification_method ?? "manual",
         });
         toast.success(`${member.full_name} checked out — ${worked} hours worked`);
       }
