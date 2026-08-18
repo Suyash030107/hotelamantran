@@ -268,6 +268,19 @@ function StaffPage() {
                             </Button>
                           }
                         />
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          aria-label={s.is_active ? "Deactivate" : "Reactivate"}
+                          title={s.is_active ? "Deactivate staff" : "Reactivate staff"}
+                          onClick={() => void toggleActive(s.id, s.full_name, s.is_active)}
+                        >
+                          {s.is_active ? (
+                            <UserRoundX className="size-4" />
+                          ) : (
+                            <UserRoundCheck className="size-4" />
+                          )}
+                        </Button>
                         <DeleteStaffButton
                           name={s.full_name}
                           onConfirm={() => void handleDelete(s.id, s.full_name)}
