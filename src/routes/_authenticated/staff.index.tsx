@@ -73,6 +73,7 @@ function StaffPage() {
   const { data: departments } = useDepartments();
   const { data: settings } = useSettings();
   const deleteStaff = useDeleteStaff();
+  const updateStaff = useUpdateStaff();
   const money = currencyFormatter(settings?.currency ?? "INR");
 
   const staff = staffQuery.data ?? [];
