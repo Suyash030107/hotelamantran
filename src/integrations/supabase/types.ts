@@ -18,8 +18,10 @@ export type Database = {
         Row: {
           check_in: string | null
           check_out: string | null
+          check_out_photo_path: string | null
           created_at: string
           date: string
+          face_match_score: number | null
           id: string
           notes: string | null
           overtime_hours: number
@@ -27,13 +29,16 @@ export type Database = {
           staff_id: string
           status: Database["public"]["Enums"]["attendance_status"]
           updated_at: string
+          verification_method: string
           worked_hours: number
         }
         Insert: {
           check_in?: string | null
           check_out?: string | null
+          check_out_photo_path?: string | null
           created_at?: string
           date?: string
+          face_match_score?: number | null
           id?: string
           notes?: string | null
           overtime_hours?: number
@@ -41,13 +46,16 @@ export type Database = {
           staff_id: string
           status?: Database["public"]["Enums"]["attendance_status"]
           updated_at?: string
+          verification_method?: string
           worked_hours?: number
         }
         Update: {
           check_in?: string | null
           check_out?: string | null
+          check_out_photo_path?: string | null
           created_at?: string
           date?: string
+          face_match_score?: number | null
           id?: string
           notes?: string | null
           overtime_hours?: number
@@ -55,6 +63,7 @@ export type Database = {
           staff_id?: string
           status?: Database["public"]["Enums"]["attendance_status"]
           updated_at?: string
+          verification_method?: string
           worked_hours?: number
         }
         Relationships: [
@@ -286,6 +295,8 @@ export type Database = {
           department_id: string | null
           designation: string | null
           email: string | null
+          face_descriptor: Json | null
+          face_enrolled_at: string | null
           full_name: string
           id: string
           is_active: boolean
@@ -304,6 +315,8 @@ export type Database = {
           department_id?: string | null
           designation?: string | null
           email?: string | null
+          face_descriptor?: Json | null
+          face_enrolled_at?: string | null
           full_name: string
           id?: string
           is_active?: boolean
@@ -322,6 +335,8 @@ export type Database = {
           department_id?: string | null
           designation?: string | null
           email?: string | null
+          face_descriptor?: Json | null
+          face_enrolled_at?: string | null
           full_name?: string
           id?: string
           is_active?: boolean
