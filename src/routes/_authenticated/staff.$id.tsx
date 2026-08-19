@@ -114,14 +114,24 @@ function StaffDetailPage() {
             {staff.designation ? ` · ${staff.designation}` : ""}
           </p>
         </div>
-        <StaffFormDialog
-          staff={staff}
-          trigger={
-            <Button variant="outline">
-              <Pencil className="size-4" /> Edit
-            </Button>
-          }
-        />
+        <div className="flex flex-wrap gap-2">
+          <FaceRegisterDialog
+            staff={staff}
+            trigger={
+              <Button variant={staff.face_descriptor ? "outline" : "default"}>
+                <ScanFace className="size-4" /> Register Face
+              </Button>
+            }
+          />
+          <StaffFormDialog
+            staff={staff}
+            trigger={
+              <Button variant="outline">
+                <Pencil className="size-4" /> Edit
+              </Button>
+            }
+          />
+        </div>
       </div>
 
       <div className="mt-4 grid gap-3 sm:grid-cols-3">
