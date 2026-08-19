@@ -109,6 +109,16 @@ function StaffDetailPage() {
             >
               {staff.is_active ? "Active" : "Inactive"}
             </Badge>
+            <Badge
+              variant="secondary"
+              className={
+                staff.face_descriptor
+                  ? "bg-info-soft text-info"
+                  : "bg-secondary text-muted-foreground"
+              }
+            >
+              {staff.face_descriptor ? "Face Registered" : "Face Not Registered"}
+            </Badge>
           </div>
           <p className="num text-sm text-muted-foreground">
             {staff.staff_code}

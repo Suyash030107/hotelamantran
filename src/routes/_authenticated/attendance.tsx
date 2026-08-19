@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CalendarCheck, Camera, Check, Download, Plus, Trash2 } from "lucide-react";
+import { CalendarCheck, Camera, Check, Download, Plus, ScanFace, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
 import { CameraAttendanceDialog } from "@/components/camera-attendance";
+import { FaceAttendanceDialog } from "@/components/face-attendance-dialog";
 import { StaffAvatar } from "@/components/staff-avatar";
 import { EmptyState, ErrorNotice, LoadingRows, PageHeader, StatCard } from "@/components/ui-bits";
 import { Badge } from "@/components/ui/badge";
@@ -146,6 +147,17 @@ function AttendancePage() {
             <Button variant="outline" onClick={exportDay} disabled={staff.length === 0}>
               <Download className="size-4" /> Export CSV
             </Button>
+            {settings && staff.length > 0 ? (
+              <FaceAttendanceDialog
+                staff={staff}
+                settings={settings}
+                trigger={
+                  <Button size="lg" className="shadow-sm">
+                    <ScanFace className="size-4" /> 📸 Face Attendance
+                  </Button>
+                }
+              />
+            ) : null}
             {settings && staff.length > 0 ? (
               <CameraAttendanceDialog
                 staff={staff}
