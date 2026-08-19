@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, CalendarCheck, Clock, Pencil, Wallet } from "lucide-react";
+import { ArrowLeft, CalendarCheck, Clock, Pencil, ScanFace, Wallet } from "lucide-react";
 
+import { FaceRegisterDialog } from "@/components/face-register-dialog";
 import { StaffAvatar } from "@/components/staff-avatar";
 import { StaffFormDialog } from "@/components/staff-form-dialog";
 import { EmptyState, ErrorNotice, LoadingRows, StatCard } from "@/components/ui-bits";
