@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, CalendarCheck, Clock, Pencil, Wallet } from "lucide-react";
+import { ArrowLeft, CalendarCheck, Clock, Pencil, ScanFace, Wallet } from "lucide-react";
 
+import { FaceRegisterDialog } from "@/components/face-register-dialog";
 import { StaffAvatar } from "@/components/staff-avatar";
 import { StaffFormDialog } from "@/components/staff-form-dialog";
 import { EmptyState, ErrorNotice, LoadingRows, StatCard } from "@/components/ui-bits";
@@ -108,20 +109,40 @@ function StaffDetailPage() {
             >
               {staff.is_active ? "Active" : "Inactive"}
             </Badge>
+            <Badge
+              variant="secondary"
+              className={
+                staff.face_descriptor
+                  ? "bg-info-soft text-info"
+                  : "bg-secondary text-muted-foreground"
+              }
+            >
+              {staff.face_descriptor ? "Face Registered" : "Face Not Registered"}
+            </Badge>
           </div>
           <p className="num text-sm text-muted-foreground">
             {staff.staff_code}
             {staff.designation ? ` · ${staff.designation}` : ""}
           </p>
         </div>
-        <StaffFormDialog
-          staff={staff}
-          trigger={
-            <Button variant="outline">
-              <Pencil className="size-4" /> Edit
-            </Button>
-          }
-        />
+        <div className="flex flex-wrap gap-2">
+          <FaceRegisterDialog
+            staff={staff}
+            trigger={
+              <Button variant={staff.face_descriptor ? "outline" : "default"}>
+                <ScanFace className="size-4" /> Register Face
+              </Button>
+            }
+          />
+          <StaffFormDialog
+            staff={staff}
+            trigger={
+              <Button variant="outline">
+                <Pencil className="size-4" /> Edit
+              </Button>
+            }
+          />
+        </div>
       </div>
 
       <div className="mt-4 grid gap-3 sm:grid-cols-3">
