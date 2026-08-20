@@ -147,7 +147,7 @@ export function FaceRegisterDialog({
         face_descriptor: captured.embedding,
         face_enrolled_at: new Date().toISOString(),
       });
-      toast.success(`Face registered for ${staff.full_name}`);
+      toast.success(`Face registered successfully for ${staff.full_name}`);
       setOpen(false);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Could not save face data");
