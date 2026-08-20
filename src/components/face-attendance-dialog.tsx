@@ -340,7 +340,7 @@ export function FaceAttendanceDialog({
             </p>
           ) : null}
 
-          <p className="text-sm text-muted-foreground">{error ?? status}</p>
+          <p className={`text-sm ${error ? "font-medium text-destructive" : "text-muted-foreground"}`}>{error ?? status}</p>
           {enrolled.length === 0 ? (
             <p className="rounded-lg bg-warning-soft p-3 text-xs">
               No registered faces yet. Open a staff profile and use “Register Face” first.
@@ -349,7 +349,7 @@ export function FaceAttendanceDialog({
 
           {error ? (
             <Button variant="ghost" onClick={() => void start()}>
-              Try camera again
+              Retry
             </Button>
           ) : (
             <div className="flex flex-wrap gap-2">

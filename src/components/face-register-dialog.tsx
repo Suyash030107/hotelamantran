@@ -215,11 +215,11 @@ export function FaceRegisterDialog({
             ) : null}
           </div>
 
-          <p className="text-sm text-muted-foreground">{error ?? status}</p>
+          <p className={`text-sm ${error ? "font-medium text-destructive" : "text-muted-foreground"}`}>{error ?? status}</p>
 
           {error ? (
             <Button variant="ghost" onClick={() => void start()}>
-              Try camera again
+              Retry
             </Button>
           ) : (
             <div className="flex flex-wrap gap-2">
