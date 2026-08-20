@@ -50,8 +50,11 @@ export function FaceRegisterDialog({
 
   const start = useCallback(async () => {
     setError(null);
-    setStatus("Starting camera…");
+    setReady(false);
     try {
+      setStatus("Initializing face recognition…");
+      await loadFaceEngine((stage) => setStatus(stage));
+      setStatus("Starting camera…");
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: "user", width: { ideal: 720 } },
         audio: false,
@@ -61,18 +64,20 @@ export function FaceRegisterDialog({
         videoRef.current.srcObject = stream;
         await videoRef.current.play().catch(() => undefined);
       }
-      setStatus("Loading face model…");
-      await loadFaceEngine();
       setReady(true);
-      setStatus("Position your face inside the frame");
+      setStatus("Camera ready — position your face inside the frame");
     } catch (err) {
+      console.error("[face] register start failed", err);
       setError(
         err instanceof Error && err.name === "NotAllowedError"
           ? "Camera permission was denied. Allow camera access in your browser to register a face."
-          : "Camera or face model could not start on this device.",
+          : err instanceof Error
+            ? err.message
+            : "Camera or face model could not start on this device.",
       );
     }
   }, []);
+
 
   useEffect(() => {
     if (!open) {
