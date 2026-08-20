@@ -10,19 +10,43 @@
  */
 import type { Human } from "@vladmandic/human";
 
-const MODEL_BASE = "https://cdn.jsdelivr.net/npm/@vladmandic/human-models/models/";
+/**
+ * Models are served from this app's own /public/models folder, so they are part
+ * of the production build and never depend on a third-party CDN (jsdelivr
+ * returns 403 for these files, which is what caused the endless
+ * "Face model loading…" state).
+ */
+const MODEL_BASE = "/models/";
 
 /** Cosine similarity threshold above which two embeddings are the same person. */
 export const MATCH_THRESHOLD = 0.62;
 /** Minimum detector confidence for a usable face. */
 export const FACE_SCORE_THRESHOLD = 0.6;
+/** Hard cap on initialization time before we surface an error. */
+export const FACE_INIT_TIMEOUT_MS = 20_000;
+
+export const FACE_INIT_TIMEOUT_MESSAGE =
+  "Face recognition could not start. Please check your internet connection or configuration and try again.";
 
 let humanPromise: Promise<Human> | null = null;
 
-export function loadFaceEngine(): Promise<Human> {
+export type FaceLoadStage =
+  | "Initializing face recognition…"
+  | "Loading face detector…"
+  | "Loading recognition model…"
+  | "Warming up models…"
+  | "Models ready";
+
+/**
+ * Loads (once) and caches the face engine in memory. Reports coarse progress
+ * and rejects after FACE_INIT_TIMEOUT_MS instead of hanging forever.
+ */
+export function loadFaceEngine(onStage?: (stage: FaceLoadStage) => void): Promise<Human> {
   if (!humanPromise) {
     humanPromise = (async () => {
+      onStage?.("Initializing face recognition…");
       const { Human: HumanCtor } = await import("@vladmandic/human");
+      onStage?.("Loading face detector…");
       const human = new HumanCtor({
         modelBasePath: MODEL_BASE,
         cacheSensitivity: 0,
@@ -44,13 +68,30 @@ export function loadFaceEngine(): Promise<Human> {
         gesture: { enabled: false },
         segmentation: { enabled: false },
       });
+      onStage?.("Loading recognition model…");
       await human.load();
+      onStage?.("Warming up models…");
       await human.warmup();
+      onStage?.("Models ready");
       return human;
-    })();
+    })().catch((error: unknown) => {
+      // Allow a retry to start from scratch instead of re-awaiting a rejection.
+      humanPromise = null;
+      console.error("[face] model initialization failed", error);
+      throw error;
+    });
   }
-  return humanPromise;
+
+  const engine = humanPromise;
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => reject(new Error(FACE_INIT_TIMEOUT_MESSAGE)), FACE_INIT_TIMEOUT_MS);
+  });
+  return Promise.race([engine, timeout]).finally(() => {
+    if (timer) clearTimeout(timer);
+  }) as Promise<Human>;
 }
+
 
 export type FaceReading = {
   embedding: number[];

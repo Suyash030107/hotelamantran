@@ -50,8 +50,11 @@ export function FaceRegisterDialog({
 
   const start = useCallback(async () => {
     setError(null);
-    setStatus("Starting camera…");
+    setReady(false);
     try {
+      setStatus("Initializing face recognition…");
+      await loadFaceEngine((stage) => setStatus(stage));
+      setStatus("Starting camera…");
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: "user", width: { ideal: 720 } },
         audio: false,
@@ -61,18 +64,20 @@ export function FaceRegisterDialog({
         videoRef.current.srcObject = stream;
         await videoRef.current.play().catch(() => undefined);
       }
-      setStatus("Loading face model…");
-      await loadFaceEngine();
       setReady(true);
-      setStatus("Position your face inside the frame");
+      setStatus("Camera ready — position your face inside the frame");
     } catch (err) {
+      console.error("[face] register start failed", err);
       setError(
         err instanceof Error && err.name === "NotAllowedError"
           ? "Camera permission was denied. Allow camera access in your browser to register a face."
-          : "Camera or face model could not start on this device.",
+          : err instanceof Error
+            ? err.message
+            : "Camera or face model could not start on this device.",
       );
     }
   }, []);
+
 
   useEffect(() => {
     if (!open) {
@@ -142,7 +147,7 @@ export function FaceRegisterDialog({
         face_descriptor: captured.embedding,
         face_enrolled_at: new Date().toISOString(),
       });
-      toast.success(`Face registered for ${staff.full_name}`);
+      toast.success(`Face registered successfully for ${staff.full_name}`);
       setOpen(false);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Could not save face data");
@@ -210,11 +215,11 @@ export function FaceRegisterDialog({
             ) : null}
           </div>
 
-          <p className="text-sm text-muted-foreground">{error ?? status}</p>
+          <p className={`text-sm ${error ? "font-medium text-destructive" : "text-muted-foreground"}`}>{error ?? status}</p>
 
           {error ? (
             <Button variant="ghost" onClick={() => void start()}>
-              Try camera again
+              Retry
             </Button>
           ) : (
             <div className="flex flex-wrap gap-2">
