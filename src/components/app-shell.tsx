@@ -13,6 +13,7 @@ import {
 import { useState, type ReactNode } from "react";
 import { toast } from "sonner";
 
+import logoAsset from "@/assets/staffsnap-logo.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { supabase } from "@/integrations/supabase/client";
