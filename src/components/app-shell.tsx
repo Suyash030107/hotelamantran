@@ -13,6 +13,7 @@ import {
 import { useState, type ReactNode } from "react";
 import { toast } from "sonner";
 
+import logoAsset from "@/assets/staffsnap-logo.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { supabase } from "@/integrations/supabase/client";
@@ -58,9 +59,12 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
 function BrandMark({ name }: { name: string }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="grid size-9 place-items-center rounded-lg bg-sidebar-primary text-sm font-bold text-sidebar-primary-foreground">
-        {name.slice(0, 1).toUpperCase()}
-      </span>
+      <img
+        src={logoAsset.url}
+        alt={`${name} logo`}
+        className="size-9 shrink-0 rounded-lg object-contain"
+      />
+      <span className="sr-only">{name.slice(0, 1).toUpperCase()}</span>
       <span className="min-w-0">
         <span className="block truncate text-sm font-semibold text-sidebar-accent-foreground">
           {name}
@@ -120,7 +124,14 @@ export function AppShell({ children }: { children: ReactNode }) {
               </div>
             </SheetContent>
           </Sheet>
-          <span className="truncate text-sm font-semibold">{businessName}</span>
+          <span className="flex min-w-0 items-center gap-2">
+            <img
+              src={logoAsset.url}
+              alt={`${businessName} logo`}
+              className="size-7 shrink-0 rounded-md object-contain"
+            />
+            <span className="truncate text-sm font-semibold">{businessName}</span>
+          </span>
           <Button variant="ghost" size="icon" onClick={handleSignOut} aria-label="Sign out">
             <LogOut className="size-4" />
           </Button>
