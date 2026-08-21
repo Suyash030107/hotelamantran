@@ -124,7 +124,14 @@ export function AppShell({ children }: { children: ReactNode }) {
               </div>
             </SheetContent>
           </Sheet>
-          <span className="truncate text-sm font-semibold">{businessName}</span>
+          <span className="flex min-w-0 items-center gap-2">
+            <img
+              src={logoAsset.url}
+              alt={`${businessName} logo`}
+              className="size-7 shrink-0 rounded-md object-contain"
+            />
+            <span className="truncate text-sm font-semibold">{businessName}</span>
+          </span>
           <Button variant="ghost" size="icon" onClick={handleSignOut} aria-label="Sign out">
             <LogOut className="size-4" />
           </Button>
