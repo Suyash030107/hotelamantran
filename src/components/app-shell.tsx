@@ -58,9 +58,12 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
 function BrandMark({ name }: { name: string }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="grid size-9 place-items-center rounded-lg bg-sidebar-primary text-sm font-bold text-sidebar-primary-foreground">
-        {name.slice(0, 1).toUpperCase()}
-      </span>
+      <img
+        src={logoAsset.url}
+        alt={`${name} logo`}
+        className="size-9 shrink-0 rounded-lg object-contain"
+      />
+      <span className="sr-only">{name.slice(0, 1).toUpperCase()}</span>
       <span className="min-w-0">
         <span className="block truncate text-sm font-semibold text-sidebar-accent-foreground">
           {name}
