@@ -369,7 +369,10 @@ export function useUpdateSalaryStatus() {
 /* -------------------------------- storage -------------------------------- */
 
 export async function uploadPhoto(folder: string, file: Blob, ext = "jpg") {
-  const path = `${folder}/${crypto.randomUUID()}.${ext}`;
+  // Photos are stored under the organization id so storage policies isolate them.
+  const orgId = await requireOrgId();
+  const path = `${orgId}/${folder}/${crypto.randomUUID()}.${ext}`;
+
   const { error } = await supabase.storage.from("photos").upload(path, file, {
     contentType: file.type || "image/jpeg",
     upsert: false,
