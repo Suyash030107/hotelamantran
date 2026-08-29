@@ -130,6 +130,23 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const router = useRouter();
+
+  // Whenever the authenticated identity changes, drop every cached query so no
+  // data from the previous account can be shown to the next one.
+  useEffect(() => {
+    let currentUserId: string | null | undefined;
+    const { data } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
+      const nextUserId = session?.user?.id ?? null;
+      if (nextUserId !== currentUserId) {
+        queryClient.clear();
+        currentUserId = nextUserId;
+      }
+      router.invalidate();
+    });
+    return () => data.subscription.unsubscribe();
+  }, [queryClient, router]);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -139,3 +156,4 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
+
