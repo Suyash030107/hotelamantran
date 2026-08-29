@@ -17,26 +17,59 @@ function unwrap<T>({ data, error }: { data: T | null; error: unknown }): T {
   return data as T;
 }
 
-/* ---------------------------------- auth --------------------------------- */
+/* ------------------------- auth / organization --------------------------- */
+
+export type Membership = {
+  userId: string;
+  organizationId: string;
+  role: "admin" | "user";
+};
+
+/**
+ * Resolves the currently authenticated user and the organization (business) they
+ * belong to. Identity always comes from the Supabase auth user id — never email
+ * or any client-side value.
+ */
+export async function currentMembership(): Promise<Membership | null> {
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+  if (userError) throw userError;
+  const userId = userData.user?.id;
+  if (!userId) return null;
+
+  const { data, error } = await supabase
+    .from("organization_members")
+    .select("organization_id, role")
+    .eq("user_id", userId)
+    .maybeSingle();
+  if (error) throw error;
+  if (!data) return null;
+
+  return { userId, organizationId: data.organization_id, role: data.role };
+}
+
+export function useMembership() {
+  return useQuery({
+    queryKey: ["membership"],
+    queryFn: currentMembership,
+    staleTime: 5 * 60 * 1000,
+  });
+}
 
 export function useIsAdmin() {
   return useQuery({
-    queryKey: ["is-admin"],
-    queryFn: async () => {
-      const { data: userData } = await supabase.auth.getUser();
-      const userId = userData.user?.id;
-      if (!userId) return false;
-      const { data, error } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", userId)
-        .eq("role", "admin")
-        .maybeSingle();
-      if (error) throw error;
-      return Boolean(data);
-    },
+    queryKey: ["membership"],
+    queryFn: currentMembership,
+    staleTime: 5 * 60 * 1000,
+    select: (m) => m?.role === "admin",
   });
 }
+
+async function requireOrgId(): Promise<string> {
+  const membership = await currentMembership();
+  if (!membership) throw new Error("Not signed in to a business account");
+  return membership.organizationId;
+}
+
 
 /* -------------------------------- settings ------------------------------- */
 
@@ -336,7 +369,10 @@ export function useUpdateSalaryStatus() {
 /* -------------------------------- storage -------------------------------- */
 
 export async function uploadPhoto(folder: string, file: Blob, ext = "jpg") {
-  const path = `${folder}/${crypto.randomUUID()}.${ext}`;
+  // Photos are stored under the organization id so storage policies isolate them.
+  const orgId = await requireOrgId();
+  const path = `${orgId}/${folder}/${crypto.randomUUID()}.${ext}`;
+
   const { error } = await supabase.storage.from("photos").upload(path, file, {
     contentType: file.type || "image/jpeg",
     upsert: false,
