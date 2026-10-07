@@ -20,13 +20,13 @@ import {
 export const Route = createFileRoute("/_authenticated/staff/$id")({
   head: () => ({
     meta: [
-      { title: "Staff Profile — StaffLedger" },
+      { title: "Staff Profile — Hotel Aamantran" },
       {
         name: "description",
         content:
           "Full employment record for a staff member: contact details, salary setup and recent attendance history.",
       },
-      { property: "og:title", content: "Staff Profile — StaffLedger" },
+      { property: "og:title", content: "Staff Profile — Hotel Aamantran" },
       {
         property: "og:description",
         content: "Contact details, salary setup and attendance history for one staff member.",

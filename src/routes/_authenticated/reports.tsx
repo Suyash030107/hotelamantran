@@ -30,13 +30,13 @@ import { computeSalary } from "@/lib/salary";
 export const Route = createFileRoute("/_authenticated/reports")({
   head: () => ({
     meta: [
-      { title: "Reports — StaffLedger" },
+      { title: "Reports — Hotel Aamantran" },
       {
         name: "description",
         content:
           "Monthly attendance and salary reports by staff member or department, with CSV export and printing.",
       },
-      { property: "og:title", content: "Reports — StaffLedger" },
+      { property: "og:title", content: "Reports — Hotel Aamantran" },
       {
         property: "og:description",
         content: "Attendance summaries, working hours and payroll totals you can export.",

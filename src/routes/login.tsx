@@ -13,13 +13,13 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
-      { title: "Admin Sign In — StaffLedger Attendance Manager" },
+      { title: "Admin Sign In — Hotel Aamantran Attendance Manager" },
       {
         name: "description",
         content:
-          "Secure admin sign in for StaffLedger: manage staff records, attendance, working hours and salary from one dashboard.",
+          "Secure admin sign in for Hotel Aamantran: manage staff records, attendance, working hours and salary from one dashboard.",
       },
-      { property: "og:title", content: "Admin Sign In — StaffLedger" },
+      { property: "og:title", content: "Admin Sign In — Hotel Aamantran" },
       {
         property: "og:description",
         content: "Sign in to manage staff, attendance and payroll for your business.",
@@ -108,7 +108,7 @@ function LoginPage() {
             <CalendarCheck className="size-5" />
           </span>
           <span className="text-lg font-semibold text-sidebar-accent-foreground">
-            StaffLedger
+            Hotel Aamantran
           </span>
         </div>
         <div className="max-w-md space-y-4">

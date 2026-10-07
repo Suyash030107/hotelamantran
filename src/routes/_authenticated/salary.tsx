@@ -31,13 +31,13 @@ import { computeSalary } from "@/lib/salary";
 export const Route = createFileRoute("/_authenticated/salary")({
   head: () => ({
     meta: [
-      { title: "Salary — StaffLedger" },
+      { title: "Salary — Hotel Aamantran" },
       {
         name: "description",
         content:
           "Automatic monthly salary calculation from attendance: gross pay, overtime, deductions, net payable and payment status.",
       },
-      { property: "og:title", content: "Salary — StaffLedger" },
+      { property: "og:title", content: "Salary — Hotel Aamantran" },
       {
         property: "og:description",
         content: "Attendance-driven payroll with overtime, deductions and payment tracking.",

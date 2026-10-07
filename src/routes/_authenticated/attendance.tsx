@@ -53,13 +53,13 @@ import {
 export const Route = createFileRoute("/_authenticated/attendance")({
   head: () => ({
     meta: [
-      { title: "Attendance — StaffLedger" },
+      { title: "Attendance — Hotel Aamantran" },
       {
         name: "description",
         content:
           "Mark daily attendance with camera check-in, edit records, track working hours and manage staff leave.",
       },
-      { property: "og:title", content: "Attendance — StaffLedger" },
+      { property: "og:title", content: "Attendance — Hotel Aamantran" },
       {
         property: "og:description",
         content: "Daily attendance marking, camera check-in and leave management.",

@@ -27,13 +27,13 @@ import type { AppSettings } from "@/lib/domain";
 export const Route = createFileRoute("/_authenticated/settings")({
   head: () => ({
     meta: [
-      { title: "Settings — StaffLedger" },
+      { title: "Settings — Hotel Aamantran" },
       {
         name: "description",
         content:
           "Configure business name, currency, work hours, late grace period, overtime rate, deduction rules and departments.",
       },
-      { property: "og:title", content: "Settings — StaffLedger" },
+      { property: "og:title", content: "Settings — Hotel Aamantran" },
       {
         property: "og:description",
         content: "Business rules that drive attendance status and salary calculation.",
