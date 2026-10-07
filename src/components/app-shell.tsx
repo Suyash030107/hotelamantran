@@ -80,7 +80,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { data: settings } = useSettings();
-  const businessName = settings?.business_name ?? "My Business";
+  const businessName = settings?.business_name ?? "Hotel Aamantran";
 
   async function handleSignOut() {
     await queryClient.cancelQueries();
