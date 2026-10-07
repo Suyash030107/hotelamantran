@@ -81,14 +81,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "StaffLedger — Staff & Attendance Management" },
+      { title: "Hotel Aamantran — Staff & Attendance Management" },
       {
         name: "description",
         content:
           "Manage staff records, camera attendance, working hours, salary and reports from one admin dashboard.",
       },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "StaffLedger — Staff & Attendance Management" },
+      { property: "og:title", content: "Hotel Aamantran — Staff & Attendance Management" },
       {
         property: "og:description",
         content: "Staff records, attendance, salary and reports in one dashboard.",

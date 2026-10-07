@@ -48,13 +48,13 @@ import { currencyFormatter, formatDate } from "@/lib/domain";
 export const Route = createFileRoute("/_authenticated/staff/")({
   head: () => ({
     meta: [
-      { title: "Staff Directory — StaffLedger" },
+      { title: "Staff Directory — Hotel Aamantran" },
       {
         name: "description",
         content:
           "Add, edit and search staff records with department, designation, salary type and working hours.",
       },
-      { property: "og:title", content: "Staff Directory — StaffLedger" },
+      { property: "og:title", content: "Staff Directory — Hotel Aamantran" },
       {
         property: "og:description",
         content: "Manage your team's employment and salary records in one place.",

@@ -38,13 +38,13 @@ import { estimateMonthlyCost } from "@/lib/salary";
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
-      { title: "Dashboard — StaffLedger Staff & Attendance" },
+      { title: "Dashboard — Hotel Aamantran Staff & Attendance" },
       {
         name: "description",
         content:
           "Live view of total staff, today's presence, late arrivals and monthly salary cost for your business.",
       },
-      { property: "og:title", content: "Dashboard — StaffLedger" },
+      { property: "og:title", content: "Dashboard — Hotel Aamantran" },
       {
         property: "og:description",
         content: "Track today's attendance and monthly payroll at a glance.",
